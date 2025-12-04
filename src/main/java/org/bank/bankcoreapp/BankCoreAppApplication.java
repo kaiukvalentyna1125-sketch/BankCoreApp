@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class BankCoreAppApplication {
 
     public static void main(String[] args) {
-        System.out.println("Hello! It is a new project!!!");
+        System.out.println("\nHello! It is a new project!!!");
         SpringApplication.run(BankCoreAppApplication.class, args);
     }
 
