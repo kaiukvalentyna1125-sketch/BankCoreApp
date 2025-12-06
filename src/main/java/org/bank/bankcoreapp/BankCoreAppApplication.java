@@ -1,31 +1,43 @@
 package org.bank.bankcoreapp;
 
 import lombok.extern.slf4j.Slf4j;
-import org.bank.bankcoreapp.service.CustomerService;
+import org.bank.bankcoreapp.builder.CreateUserNode;
+import org.bank.bankcoreapp.shell.Exit;
+import org.bank.bankcoreapp.shell.Help;
+import org.bank.bankcoreapp.shell.Menu;
+import org.bank.bankcoreapp.shell.Return;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.Map;
+import java.util.Scanner;
 
 @SpringBootApplication
 @Slf4j
 public class BankCoreAppApplication {
 
-    private static final CustomerService customerService = new CustomerService(
-            Map.of(1, "Valentyna", 2, "Vita", 3, "Olena")
-    );
-
     public static void main(String[] args) {
-        log.info("Application is starting...");
-        System.out.println("\nHello! It is a new project!!!");
-
-        log.info("Let's test our code:");
-        log.info("User[1] = " + customerService.getCustomer(0));
-        log.info("User[2] = " + customerService.getCustomer(1));
-        log.info("User[3] = " + customerService.getCustomer(2));
-
         SpringApplication.run(BankCoreAppApplication.class, args);
-        log.info("Application started successfully!");
-    }
 
+        Scanner scanner = new Scanner(System.in);
+
+        Menu main = new Menu("main", scanner);
+        Return returnCmd = new Return();
+        Exit exitCmd = new Exit();
+        Help helpMain = new Help("Main menu help info");
+
+        main.add(helpMain);
+        main.add(returnCmd);
+        main.add(exitCmd);
+
+        Menu userMenu = new Menu("user", scanner);
+        userMenu.add(returnCmd);
+        userMenu.add(exitCmd);
+        userMenu.add(new Help("Menu for creating UserNodes"));
+        userMenu.add(new CreateUserNode(scanner));
+
+        main.add(userMenu);
+
+        main.execute();
+    }
 }
+
